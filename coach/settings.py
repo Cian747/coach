@@ -4,6 +4,9 @@ from decouple import config,Csv
 import os
 import django_on_heroku
 import dj_database_url
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -17,7 +20,7 @@ MODE = config("MODE",default="dev")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-DEBUG = os.environ.get('DEBUG', False)
+# DEBUG = os.environ.get('DEBUG', False)
 
 
 ALLOWED_HOSTS = []
@@ -32,7 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app'
+    'app',
+    'cloudinary'
 ]
 
 MIDDLEWARE = [
@@ -149,6 +153,13 @@ EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
+
+cloudinary.config( 
+  cloud_name = "kenya12254", 
+  api_key = "396238949596112", 
+  api_secret = "FLfqPbw73_Nj6vSCFhMXMtbyhiY" 
+)
 
 
 # Default primary key field type
