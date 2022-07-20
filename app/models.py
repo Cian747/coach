@@ -6,6 +6,9 @@ from django.urls import reverse
 # Create your models here.
 
 class Sport(models.Model):
+    '''
+    Use this to pick the sport you would like to view categorically
+    '''
     sport_image = CloudinaryField('image',blank=True, null=True)
     name = models.CharField(max_length=150,null=True, blank=True)
     description = models.TextField()
@@ -14,11 +17,16 @@ class Sport(models.Model):
        return self.name
 
 
+class Location(models.Model):
+    location_name = models.CharField(max_length=50)
+    sport = models.ForeignKey(Sport,on_delete=models.CASCADE)
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     coach_name = models.CharField(max_length=50,null=True,blank=True)
     profile_photo = CloudinaryField('image',blank=True,null=True)
     sport = models.ForeignKey(Sport, on_delete=models.DO_NOTHING,null=True)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
     coach_email = models.EmailField(blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -71,5 +79,14 @@ class Wishlist(models.Model):
 
     def __str__(self) -> str:
        return self.service_name
+
+class Comment(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+       return self.profile.coach_name
+
 
 
