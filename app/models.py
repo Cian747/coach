@@ -14,7 +14,7 @@ class Sport(models.Model):
     description = models.TextField()
 
     def __str__(self) -> str:
-       return self.name
+       return self.name #type:ignore
 
 
 class Location(models.Model):
@@ -46,8 +46,8 @@ class Profile(models.Model):
         return cls.objects.filter(user__username__icontains = search_term)
 
 
-    def get_absolute_url(self):
-        return reverse('profile',args=[str(self.id)])
+    # def get_absolute_url(self):
+    #     return reverse('profile',args=[str(self.id)])
 
         # return reverse('home')
     
@@ -77,16 +77,16 @@ class Wishlist(models.Model):
     service_name = models.ForeignKey(Services,on_delete=models.CASCADE)
     saved_on = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self) -> str:
-       return self.service_name
+    # def __str__(self) -> str:
+    #    return self.service_name
 
 class Comment(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self) -> str:
-       return self.profile.coach_name
+    # def __str__(self) -> str:
+    #    return self.profile.coach_name
 
 
 

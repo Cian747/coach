@@ -1,5 +1,5 @@
 notes.txt
 .vscode
 .env
-virtual
+venv/
 *pyc
