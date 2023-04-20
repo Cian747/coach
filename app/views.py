@@ -13,7 +13,7 @@ def home(request):
     all_sports = Sport.objects.all()
     
 
-    return render(request,'landing.html',{'sports':all_sports})
+    return render(request,'index.html',{'sports':all_sports})
 
 def register(request):
     rgf = CoachRegistrationForm()
@@ -44,6 +44,9 @@ def login_user(request):
 
     return render(request, 'registration/login.html')
 
+def profile(request):
+    return render(request, 'profile.html')
+
 def all_coaches(request):
     '''
     List all of the coaches
@@ -54,7 +57,7 @@ def all_coaches(request):
 
 def user_page(request,profile):
     '''
-    * The user gets to view the coaches in the area only as per their selection
+    * The user gets to view the coaches in the area only as per their selection while registering
     * User gets to see the coaches on their wishlist
     * Show sports services available in given sport choice
     '''
