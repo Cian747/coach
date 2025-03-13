@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
 from django.urls import reverse
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 # Create your models here.
 
@@ -11,30 +15,58 @@ class Sport(models.Model):
     '''
     sport_image = CloudinaryField('image',blank=True, null=True)
     name = models.CharField(max_length=150,null=True, blank=True)
-    description = models.TextField()
-
+    description = models.TextField(null=True,blank=True)
+# Add the profile relation key here
     def __str__(self) -> str:
        return self.name #type:ignore
+    
+    def save_sport(self):
+        return self.save()
 
 
 class Location(models.Model):
-    location_name = models.CharField(max_length=50)
-    sport = models.ForeignKey(Sport,on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, unique=True)
+    address = models.TextField(blank=True, null=True)
+    city = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    sport = models.ForeignKey(Sport, on_delete=models.CASCADE, null=True, blank=True)
+
+    def save_location(self):
+        return self.save()
+
+    def __str__(self):
+        return self.name
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    coach_name = models.CharField(max_length=50,null=True,blank=True)
-    profile_photo = CloudinaryField('image',blank=True,null=True)
-    sport = models.ForeignKey(Sport, on_delete=models.DO_NOTHING,null=True)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    coach_email = models.EmailField(blank=True,null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=False)
+    sport = models.ForeignKey(Sport, on_delete=models.SET_NULL, null=True, blank=True)
+    location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
+    profile_photo = CloudinaryField('profile_image',null=True, blank=True)
+    bio = models.TextField(blank=True, null=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    specialization = models.CharField(max_length=255, blank=True, null=True)
+    certifications = models.TextField(blank=True, null=True)
+    experience_years = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f"{self.user.username} - {self.sport.name if self.sport else 'No Sport'}"
+
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
 
     def save_profile(self):
-        self.save()
+        return self.save()
 
     def delete_profile(self):
-        self.delete()
+        return self.delete()
 
     @classmethod
     def update_profile_photo(cls, id,coach_email):
@@ -59,34 +91,51 @@ class Enquiry(models.Model):
     question = models.TextField()
     sent_on = models.DateTimeField(auto_now_add=True)
 
-class Services(models.Model):
+    def __str__(self):
+        return self.profile.user.username
+
+    def save_enquiry(self):
+        return self.save()
+
+class Service(models.Model):
     sport_punchline = models.CharField(max_length=50)
     service_image = CloudinaryField('image',blank=True,null=True)
     related_sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
     description = models.TextField()
     created_at =  models.DateTimeField(auto_now_add=True)
-    posted_by = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    posted_by = models.ForeignKey(Profile, on_delete=models.CASCADE,null=True,blank=True)
 
 
     def __str__(self) -> str:
        return self.sport_punchline
+    
+    def save_service(self):
+        return self.save()
 
 
 class Wishlist(models.Model):
+    '''
+    A user can add services they are interested in following
+    '''
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    service_name = models.ForeignKey(Services,on_delete=models.CASCADE)
+    service_name = models.ForeignKey(Service,on_delete=models.CASCADE)
     saved_on = models.DateTimeField(auto_now_add=True)
 
-    # def __str__(self) -> str:
-    #    return self.service_name
+    def __str__(self) -> str:
+       return self.service_name
+    
+    def save_wishlist(self):
+        return self.save()
 
 class Comment(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # def __str__(self) -> str:
-    #    return self.profile.coach_name
+    def __str__(self) -> str:
+       return self.profile.coach_name
 
+    def save_comment(self):
+        return self.save()
 
 

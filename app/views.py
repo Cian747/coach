@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import authenticate,login,logout
 from .forms import CoachRegistrationForm
 from django.contrib import messages
-from .models import Sport,Profile,Services,Enquiry,Wishlist,Location
+from .models import Sport,Profile,Service,Enquiry,Wishlist,Location
 # Create your views here.
 
 
@@ -16,6 +16,9 @@ def home(request):
     return render(request,'index.html',{'sports':all_sports})
 
 def register(request):
+    """
+    Register users
+    """
     rgf = CoachRegistrationForm()
     if request.method == 'POST':
         rgf = CoachRegistrationForm(request.POST)
@@ -49,7 +52,7 @@ def profile(request):
 
 def all_coaches(request):
     '''
-    List all of the coaches
+    * List all of the coaches
     '''
     
     return render(request,'coach.html')
@@ -64,21 +67,21 @@ def user_page(request,profile):
 
 def rate_coach(request):
     '''
-    Rate the coach and comment on their service
+    * Rate the coach and comment on their service
     '''
 
 def coaches_in_area(request):
     '''
-    See coaches in your/the area 
-    Implement the map feature from google
+    * See coaches in your/the area 
+    * Implement the map feature from google
     '''
 
 def sport_services(request):
     '''
-    show all sports services
+    * Show all sports services
     '''
 
 def comment_on_coach(request, profile):
     '''
-    Make review on service offered by a coach
+    * Make review on service offered by a coach
     '''
