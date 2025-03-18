@@ -1,6 +1,6 @@
 from pyexpat import model
 from django.forms import widgets
-from .models import Enquiry,Service,Profile, Wishlist
+from .models import SportAdvert,Profile, Wishlist,Sport,Comment,Location
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms

@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import authenticate,login,logout
 from .forms import CoachRegistrationForm
 from django.contrib import messages
-from .models import Sport,Profile,Service,Enquiry,Wishlist,Location
+from .models import Sport,Profile,SportAdvert,Wishlist,Location
 # Create your views here.
 
 
@@ -48,6 +48,10 @@ def login_user(request):
     return render(request, 'registration/login.html')
 
 def profile(request):
+    '''
+    View all coaches available in your area
+    * Future implementation - Coaches in your locations
+    '''
     return render(request, 'profile.html')
 
 def all_coaches(request):

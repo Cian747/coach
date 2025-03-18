@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Profile,Sport,Location,Service,Enquiry,Comment,Wishlist
+from .models import Profile,Sport,Location,SportAdvert,Comment,Wishlist
 from django.contrib.auth.models import User
 
 # Create your tests here.
@@ -31,10 +31,10 @@ class CoachTestCase(TestCase):
         self.new_profile.save_profile()
         # print(self.new_sport.name)
 
-        self.new_enquiry = Enquiry.objects.create(profile=self.new_profile,question="Where are you based?",sent_on='1901-08-09')
+        # self.new_enquiry = Enquiry.objects.create(profile=self.new_profile,question="Where are you based?",sent_on='1901-08-09')
         # # self.new_enquiry.save_enquiry()
 
-        self.new_service = Service.objects.create(sport_punchline='Football',service_image='image.jpg',related_sport=self.new_sport,description='The new season is scheduled to start on March 16th',created_at='2025-09-05',posted_by=self.new_profile)
+        self.new_service = SportAdvert.objects.create(sport_punchline='Football',service_image='image.jpg',related_sport=self.new_sport,description='The new season is scheduled to start on March 16th',created_at='2025-09-05',posted_by=self.new_profile)
         # self.new_service.save_service()
 
         self.new_comment = Comment.objects.create(profile=self.new_profile,comment='I like this',created_at='2025-03-04')
@@ -54,6 +54,7 @@ class CoachTestCase(TestCase):
         """Test that a Profile instance is created properly."""
         self.assertEqual(self.new_profile.user.username, 'Coach James')
         self.assertEqual(self.new_profile.sport.name, 'Football')
+        self.assertEqual(self.new_profile.role, 2)
         self.assertEqual(self.new_profile.experience_years, 5)
 
     def test_profile_sport_assignment(self):
@@ -84,10 +85,10 @@ class CoachTestCase(TestCase):
         comments = Comment.objects.all()
         self.assertTrue(len(comments)==1)
         
-    def test_save_enquiry(self):
-        self.new_enquiry.save_enquiry()
-        enquiries = Enquiry.objects.all()
-        self.assertTrue(len(enquiries)==1)
+    # def test_save_enquiry(self):
+    #     self.new_enquiry.save_enquiry()
+    #     enquiries = Enquiry.objects.all()
+    #     self.assertTrue(len(enquiries)==1)
 
 # Testing is if all models are functioning properly
     def test_user_instance(self):
