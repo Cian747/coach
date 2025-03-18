@@ -40,6 +40,12 @@ EMAIL_HOST_PASSWORD='email_password'
 
 ```
 * commit all your changes and create a pull request
+```
+git add.
+git commit -m "edit that was made"
+git push origin <branch-name>
+```
+
 * Deployment
 ```
 git add.
