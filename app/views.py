@@ -11,9 +11,9 @@ def home(request):
     Show coaches in the area as per their sport choice
     '''
     all_sports = Sport.objects.all()
-    
+    all_coaches = Profile.objects.all()
 
-    return render(request,'index.html',{'sports':all_sports})
+    return render(request,'index.html',{'sports':all_sports, 'coaches':all_coaches})
 
 def register(request):
     """
@@ -52,7 +52,18 @@ def profile(request):
     View all coaches available in your area
     * Future implementation - Coaches in your locations
     '''
-    return render(request, 'profile.html')
+    all_coaches = Profile.objects.all()
+
+    return render(request,{'coaches':all_coaches}, 'profile.html')
+
+
+def profile(request,id):
+    '''
+    See more etails about an individual coach
+    '''
+    coach = Profile.objects.get(id=id)
+
+    return render(request, {'coach':coach},'profile.html')
 
 def all_coaches(request):
     '''
