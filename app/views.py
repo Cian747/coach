@@ -54,16 +54,20 @@ def profile(request):
     '''
     all_coaches = Profile.objects.all()
 
-    return render(request,{'coaches':all_coaches}, 'profile.html')
+    return render(request,'profile.html',{'coaches':all_coaches})
 
 
-def profile(request,id):
+def profile_detail(request,id):
     '''
     See more etails about an individual coach
     '''
     coach = Profile.objects.get(id=id)
 
-    return render(request, {'coach':coach},'profile.html')
+    context={
+        'coach':coach,
+    }
+
+    return render(request,'profile/profile-detail.html',context)
 
 def all_coaches(request):
     '''

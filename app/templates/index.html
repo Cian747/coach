@@ -166,6 +166,18 @@
       <p><a href="">How does it work</a></p>
     </div>
   </div>
+
+  <div>
+    {% for coach in coaches %}
+    <ul>
+      <a href="{% url 'single_profile' coach.id %}">
+      <li>Coach {{ coach }}</li>
+      </a>
+    </ul>  
+  {% endfor %}
+
+  </div>
+
   <div class="row">
     <div class="col-md-4">
       <img src="../../static/images/drew-beamer-Vc1pJfvoQvY-unsplash.jpg" alt="" height="600">
