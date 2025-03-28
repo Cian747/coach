@@ -4,6 +4,8 @@ from cloudinary.models import CloudinaryField
 from django.urls import reverse
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from .managers import CustomUserManager
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 # Create your models here.
@@ -21,7 +23,6 @@ class Sport(models.Model):
     
     def save_sport(self):
         return self.save()
-
 
 class Location(models.Model):
     name = models.CharField(max_length=255, unique=True)
